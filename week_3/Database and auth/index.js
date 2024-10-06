@@ -1,10 +1,25 @@
 import express from "express";
-
+import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 const jwtPassword = "123456";
+import dotenv from "dotenv";
+
+dotenv.config();
+
 
 const app = express();
 app.use(express.json());
+
+
+mongoose.connect(
+    process.env.MONGODB_URL
+)
+ 
+const User = mongoose.model("User",{
+    username: String,
+    password: String,
+    name: String
+})
 
 const ALL_USERS = [
   {
@@ -24,13 +39,15 @@ const ALL_USERS = [
   },
 ];
 
-function userExists(username, password) {
+async function userExists(username, password) {
   // write logic to return true or false if this user exists
    
   // in ALL_USERS array
-  const user  =ALL_USERS.find((user) =>user.name === username && user.password === password);
+  const data = await User.find({username, password});
+  console.log(data);
+  // const user  =data.find((user) =>user.username === username && user.password === password);
 
-  return user;
+  return data;
 }
 
 app.post("/signin", function (req, res) {
@@ -51,14 +68,16 @@ app.post("/signin", function (req, res) {
   });
 });
 
-app.get("/users", function (req, res) {
+app.get("/users", async (req, res) => {
   const token = req.headers.authorization;
   try {
     const decoded = jwt.verify(token, jwtPassword);
     const username = decoded.username;
     // return a list of users other than this username
-    const data =ALL_USERS.filter((user) => user !== username);
-        return res.json(data);
+    const userdata = await User.find({username: { $ne: username } });
+    // const data =userdata.filter((user) => user.username !== username);
+    // console.log(data);
+        return res.json(userdata);
   } catch (err) {
     return res.status(403).json({
       msg: "Invalid token",
@@ -67,3 +86,4 @@ app.get("/users", function (req, res) {
 });
 
 app.listen(3000)
+
