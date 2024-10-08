@@ -1,4 +1,6 @@
-const jwt = require('jsonwebtoken');
+import express from "express"
+import jwt from "jsonwebtoken"
+import z from "zod";
 const jwtPassword = 'secret';
 
 
@@ -15,6 +17,12 @@ const jwtPassword = 'secret';
  */
 function signJwt(username, password) {
     // Your code here
+
+    const mySchema = z.object({
+        "email" :z.string().email(),
+        "password": z.string().min(8)
+    })
+   
 }
 
 /**
