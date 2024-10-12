@@ -14,7 +14,7 @@ app.use(express.json());
 mongoose.connect(
     process.env.MONGODB_URL
 )
- 
+ console.log("mongodb connected")
 const User = mongoose.model("User",{
     username: String,
     password: String,

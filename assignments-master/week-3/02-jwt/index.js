@@ -22,6 +22,18 @@ function signJwt(username, password) {
         "email" :z.string().email(),
         "password": z.string().min(8)
     })
+
+     const check = mySchema.safeParse({username,password});
+     
+     if(!check){
+        return null;
+     }
+
+     const token = jwt.sign({username:username},jwtPassword);
+
+     return token;
+
+     
    
 }
 
@@ -35,6 +47,14 @@ function signJwt(username, password) {
  */
 function verifyJwt(token) {
     // Your code here
+      let ans=true;
+    try {
+        jwt.verify(token,jwtPassword);
+    } catch (error) {
+        return false;
+    }
+
+    return ans;
 }
 
 /**
@@ -46,6 +66,12 @@ function verifyJwt(token) {
  */
 function decodeJwt(token) {
     // Your code here
+    const decode =jwt.decode(token);
+    if(decode){
+        return true
+    }else {
+        return false;
+    }
 }
 
 
