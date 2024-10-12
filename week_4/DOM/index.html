@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+     <div style="flex-direction: column;">
+         <input type="Number" value="n1" id="n1" placeholder="enter a number1">
+         <input type="Number" value="n2" id="n2" placeholder="enter a number2">
+         <button onclick="add()" type="submit">Submit</button>
+
+         <div>
+            <p id="results"></p>
+         </div>
+     </div>
+</body>
+<script>
+    const add = () => {
+        const n1 = document.getElementById("n1").value;
+        const n2 = document.getElementById("n2").value;
+        const ans = Number(n1)+Number(n2);
+     console.log(n1);
+         console.log(ans);
+        document.getElementById("results").innerText=ans;
+
+      
+    }
+</script>
+</html>
