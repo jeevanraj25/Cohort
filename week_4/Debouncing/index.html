@@ -1,0 +1,29 @@
+<html>
+<script>
+    let timeout;
+    async function debouncePopulateDiv() {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            populateDiv()
+        }, 1000)
+
+    }
+    async function populateDiv() {
+        let a = document.getElementById("first").value
+        let b = document.getElementById("second").value
+        let res = await fetch("http://127.0.0.1:30://127.0.0.1:3001/sum?a=" + a + "&b=" + b)
+        let sumres = await res.text()
+        console.log(sumres)
+
+    }
+</script>
+
+<body>
+    <input oninput="debouncePopulateDiv()" type="text" id="first" placeholder="First number"><br><br>
+    <input oninput="debouncePopulateDiv()" type="text" id="second" placeholder="Second number"><br><br>
+    <input type="button" onclick="populateDiv()" value="Calculate sum"><br><br>
+    <div id="finalSum">hi there</div>
+
+</body>
+
+</html>
