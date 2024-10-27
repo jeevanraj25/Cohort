@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState ,useRef,useCallback} from "react";
 import { useEffect } from "react";
 import axios from "axios"
 
@@ -52,9 +52,52 @@ function App() {
 
 
 
+//use Ref
+
+function App() {
+  const divRef = useRef();
+
+  useEffect(() => {
+    setTimeout(() => {
+      divRef.current.innerHTML = "10"
+    }, 5000);
+  }, [])
+
+  const incomeTax = 20000;
+
+  return (
+    <div>
+        hi there, your income tax returns are <div ref={divRef}>{incomeTax}</div>
+    </div>
+  )
+}
 
 
 
+
+// use callback
+
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  // Memoize the increment function
+  const increment = useCallback(() => {
+    setCount((prevCount) => prevCount + 1);
+  }, []);
+
+  return (
+    <div>
+      <p>Count: {count}</p>
+      <ChildComponent onClick={increment} />
+    </div>
+  );
+}
+
+function ChildComponent({ onClick }) {
+  console.log("Child component rendered");
+  return <button onClick={onClick}>Increment</button>;
+}
 
 
 
