@@ -98,7 +98,14 @@ export const login = async(c:any) =>{
           const token = await sign(payload, c.env.SECRET)
           c.set('userid',userexits.id);
          setCookie(c,'userid',userexits.id);
-         setCookie(c,'token', token);
+         setCookie(c, 'jwt', token, {
+            httpOnly: true,
+            secure: false, 
+            maxAge: 60 * 60 * 24 * 7,
+            sameSite: 'lax', 
+            path: '/',
+            domain: 'localhost' 
+          })
         //  console.log(token);
        
         return c.json({
