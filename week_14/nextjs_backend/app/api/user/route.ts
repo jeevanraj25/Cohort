@@ -1,15 +1,12 @@
-import { NextResponse } from "next/server";
-
-import { PrismaClient } from '@prisma/client'
-
-let client = new PrismaClient()
+import { NextRequest, NextResponse } from "next/server";
+import client from "../../../db"
 export async function GET() {
     const user = await client.user.findFirst({});
     return NextResponse.json({ name: user?.username, email: user?.username })
   }
 
 
-  export async function POST(req:NextResponse) {
+  export async function POST(req:NextRequest) {
 
     const body = await req.json();
     // should add zod validation here
