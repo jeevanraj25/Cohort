@@ -6,7 +6,7 @@ const blogRouter =new Hono();
 
 // blogRouter.use("*",authMiddleware);
 blogRouter.get("/get",getBlog);
- blogRouter.get("/get/:id",getBlogbyID);
+blogRouter.get("/get/:id",getBlogbyID);
 blogRouter.put("/update/:id",updateBlog);
 blogRouter.delete("/delete/:id",deleteBlog);
 blogRouter.post('/create',createBlog );
