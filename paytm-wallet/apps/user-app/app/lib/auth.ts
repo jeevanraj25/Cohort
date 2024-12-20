@@ -3,27 +3,28 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import bcrypt from "bcrypt";
 import GoogleProvider from "next-auth/providers/google";
 
-
 export const authOptions = {
+
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID || '',
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || ''
-          }),
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID || '',
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET|| ''
+      }),
+      
       CredentialsProvider({
           name: 'Credentials',
           credentials: {
-            Email: { label: "Email", type: "text", placeholder: "enter your email", required: true },
-            password: { label: "Password", type: "password",placeholder: "enter your password", required: true }
+            email: { label: "email", type: "text", placeholder: "enter your email" },
+            password: { label: "Password", type: "password" ,placeholder:"enter your password"}
           },
-         
           // TODO: User credentials type from next-aut
           async authorize(credentials: any) {
+            console.log(credentials);
             // Do zod validation, OTP validation here
             const hashedPassword = await bcrypt.hash(credentials.password, 10);
             const existingUser = await db.user.findFirst({
                 where: {
-                    number: credentials.email
+                  email: credentials.email
                 }
             });
 
@@ -33,7 +34,7 @@ export const authOptions = {
                     return {
                         id: existingUser.id.toString(),
                         name: existingUser.name,
-                        email: existingUser.number
+                       email: existingUser.email
                     }
                 }
                 return null;
@@ -42,7 +43,7 @@ export const authOptions = {
             try {
                 const user = await db.user.create({
                     data: {
-                        number: credentials.phone,
+                        email: credentials.email,
                         password: hashedPassword
                     }
                 });
@@ -50,7 +51,7 @@ export const authOptions = {
                 return {
                     id: user.id.toString(),
                     name: user.name,
-                    email: user.number
+                    email: user.email
                 }
             } catch(e) {
                 console.error(e);
@@ -64,10 +65,12 @@ export const authOptions = {
     callbacks: {
         // TODO: can u fix the type here? Using any is bad
         async session({ token, session }: any) {
+          // console.log("token   ",token);
+          // console.log("session   ",session)
             session.user.id = token.sub
 
             return session
         }
     }
   }
-  
+ 
