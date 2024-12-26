@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input oninput="debouncePopulateDiv()" type="text" id="first" placeholder="First number"><br><br>
+<input oninput="debouncePopulateDiv()" type="text" id="second" placeholder="Second number"><br><br>
+<input type="button" onclick="populateDiv()" value="Calculate sum"><br><br>
+<div id="finalSum">hi there</div>
+
+</body>
+<script>
+        function populateDiv() {
+            const a = document.getElementById("firstNumber").value;
+            const b = document.getElementById("secondNumber").value;
+            const element = document.getElementById("finalSum");
+            fetch("https://sum-server.100xdevs.com/sum?a=" + a + "&b=" + b)
+                .then(function (response) {
+                    response.text()
+                        .then(function (ans) {
+                            document.getElementById("finalSum").innerHTML = ans;
+                        })
+                })
+        }
+
+        //another metho
+            async function populateDiv() {
+                const a = document.getElementById("principal").value;
+                const b = document.getElementById("rate").value;
+                const c = document.getElementById("time").value;
+
+                const response = await fetch("https://sum-server.100xdevs.com/interest?principal=" + a + "&rate=" + b + "&time=" + c);
+                const ans = await response.text();
+                document.getElementById("interest").innerHTML = ans;
+            }
+
+</script>
+</html>
