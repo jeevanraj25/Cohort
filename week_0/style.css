@@ -1,0 +1,12 @@
+.left-corner{
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+.sign{
+    background-color: lightblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
